@@ -7,41 +7,48 @@ cartRouter.use(express.json());
 
 cartRouter.post("/", async (req, res) => {
     try {
-        const rawData = fs.readFileSync("carrito.json");
+        const rawData = fs.readFileSync("./carrito.json");
         const carritos = JSON.parse(rawData);
         
         // Genera un nuevo ID autoincrementable
         const newCartId = carritos.length + 1;
         
+        // Verifica si el cuerpo de la solicitud contiene la lista de productos
+        if (!req.body || !req.body.products || !Array.isArray(req.body.products)) {
+            return res.status(400).json({ error: "Campos vacios o invalidos en el request.body.products" });
+        }
+
         // Estructura del nuevo carrito
         const newCart = {
             id: newCartId,
-            products: []
+            products: req.body.products
         };
         
         // Agrega el nuevo carrito al array de carritos
         carritos.push(newCart);
         
         // Guarda el array actualizado de carritos en el archivo JSON
-        fs.writeFileSync("carrito.json", JSON.stringify(carritos, null, 2));
+        fs.writeFileSync("./carrito.json", JSON.stringify(carritos, null, 2));
 
-        res.status(201).json({ message: "Cart created successfully", cart: newCart });
+        res.status(201).json({ message: "Carrito creado exitosamente", cart: newCart });
     } catch (error) {
+        console.error("Error al crear el carrito:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+
 
 cartRouter.get("/:cid", async (req, res) => {
     try {
         const cid = parseInt(req.params.cid);
         
-        const rawData = fs.readFileSync("carrito.json");
+        const rawData = fs.readFileSync("./carrito.json");
         const carritos = JSON.parse(rawData);
         
         const cart = carritos.find(cart => cart.id === cid);
         
         if (!cart) {
-            res.status(404).json({ error: "Cart not found" });
+            res.status(404).json({ error: "Carrito no encontrado" });
         } else {
             res.json(cart);
         }
@@ -50,23 +57,23 @@ cartRouter.get("/:cid", async (req, res) => {
     }
 });
 
-cartRouter.post("/:cid/product/:cid", async (req, res) => {
+cartRouter.post("/:cid/product/:pid", async (req, res) => {
     try {
         const cid = parseInt(req.params.cid);
         const pid = parseInt(req.params.pid);
         const { quantity } = req.body;
 
         if (!quantity || isNaN(quantity) || quantity <= 0) {
-            return res.status(400).json({ error: "Invalid quantity" });
+            return res.status(400).json({ error: "Cantidad invalida" });
         }
 
-        const rawData = fs.readFileSync("carrito.json");
+        const rawData = fs.readFileSync("./carrito.json");
         let carritos = JSON.parse(rawData);
 
         const cartIndex = carritos.findIndex(cart => cart.id === cid);
 
         if (cartIndex === -1) {
-            return res.status(404).json({ error: "Cart not found" });
+            return res.status(404).json({ error: "Carrito no encontrado" });
         }
 
         const productToAdd = {
@@ -84,9 +91,9 @@ cartRouter.post("/:cid/product/:cid", async (req, res) => {
             carritos[cartIndex].products.push(productToAdd);
         }
 
-        fs.writeFileSync("carrito.json", JSON.stringify(carritos, null, 2));
+        fs.writeFileSync("./carrito.json", JSON.stringify(carritos, null, 2));
 
-        res.json({ message: "Product added to cart successfully", cart: carritos[cartIndex] });
+        res.json({ message: "Producto agregado al carrito exitosamente", cart: carritos[cartIndex] });
     } catch (error) {
         res.status(500).json({ error: "Internal Server Error" });
     }
