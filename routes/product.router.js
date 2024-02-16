@@ -52,6 +52,7 @@ productRouter.post("/add", async (req, res) => {
             thumbnail
         } = req.body;
 
+        // En caso de que no agreguen todos los campos a excepcion del thumbnail
         if (!title || !description || !code || !price || !stock || !category) {
             return res.status(400).json({ error: "Faltan campos requeridos" });
         }
@@ -59,6 +60,7 @@ productRouter.post("/add", async (req, res) => {
         const rawData = fs.readFileSync("./productos.json");
         const productos = JSON.parse(rawData);
         
+        // Los datos que se envian al archivo JSON
         const newProduct = {
             id: productos.length + 1,
             title,
@@ -73,6 +75,7 @@ productRouter.post("/add", async (req, res) => {
 
         productos.push(newProduct);
 
+        // Guarda los productos en el archivo JSON
         fs.writeFileSync("./productos.json", JSON.stringify(productos, null, 2));
 
         res.status(201).json({ message: "Producto agregado exitosamente", product: newProduct });
