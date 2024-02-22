@@ -55,5 +55,27 @@
         "quantity": 2
       }
     ]
+  },
+  {
+    "id": 7,
+    "products": [
+      {
+        "id": 1,
+        "quantity": 1
+      },
+      {
+        "id": 1,
+        "quantity": 1
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "products": [
+      {
+        "id": 1,
+        "quantity": 2
+      }
+    ]
   }
 ]

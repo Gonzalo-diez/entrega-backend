@@ -13,7 +13,7 @@ cartRouter.post("/", async (req, res) => {
         
         // Verifica si el cuerpo de la solicitud contiene la lista de productos
         if (!req.body || !Array.isArray(req.body.products)) {
-            return res.status(400).json({ error: "Campos vacíos o inválidos en el request.body.products" });
+            return res.status(400).json({ error: "Campos vacíos o inválidos" });
         }
 
         // Estructura del nuevo carrito con el array de productos vacío
