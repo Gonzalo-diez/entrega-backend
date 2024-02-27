@@ -6,7 +6,7 @@ const productRouter = express.Router();
 productRouter.get("/", async (req, res) => {
     try {
         const limit = req.query.limit ? parseInt(req.query.limit) : null;
-        const rawData = fs.readFileSync("./productos.json");
+        const rawData = fs.readFileSync("../../productos.json");
         const productos = JSON.parse(rawData);
         
         let result = productos;
@@ -23,7 +23,7 @@ productRouter.get("/", async (req, res) => {
 productRouter.get("/:pid", async (req, res) => {
     try {
         const pid = parseInt(req.params.pid);
-        const rawData = fs.readFileSync("./productos.json");
+        const rawData = fs.readFileSync("../../productos.json");
         const productos = JSON.parse(rawData);
         
         const product = productos.find(producto => producto.id === pid);
@@ -55,7 +55,7 @@ productRouter.post("/", async (req, res) => {
             return res.status(400).json({ error: "Faltan campos requeridos" });
         }
 
-        const rawData = fs.readFileSync("./productos.json");
+        const rawData = fs.readFileSync("../../productos.json");
         const productos = JSON.parse(rawData);
         
         // Los datos que se envian al archivo JSON
@@ -74,7 +74,7 @@ productRouter.post("/", async (req, res) => {
         productos.push(newProduct);
 
         // Guarda los productos en el archivo JSON
-        fs.writeFileSync("./productos.json", JSON.stringify(productos, null, 2));
+        fs.writeFileSync("../../productos.json", JSON.stringify(productos, null, 2));
 
         res.status(201).json({ message: "Producto agregado exitosamente", product: newProduct });
     } catch (error) {
@@ -91,7 +91,7 @@ productRouter.put("/:pid", async (req, res) => {
             return res.status(400).json({ error: "No fields to update provided" });
         }
 
-        const rawData = fs.readFileSync("./productos.json");
+        const rawData = fs.readFileSync("../../productos.json");
         let productos = JSON.parse(rawData);
 
         const index = productos.findIndex(producto => producto.id === pid);
@@ -114,7 +114,7 @@ productRouter.put("/:pid", async (req, res) => {
         productos[index] = updatedProduct;
 
         // Guarda el array actualizado de productos en el archivo JSON
-        fs.writeFileSync("./productos.json", JSON.stringify(productos, null, 2));
+        fs.writeFileSync("../../productos.json", JSON.stringify(productos, null, 2));
 
         res.json({ message: "Product updated successfully", product: updatedProduct });
     } catch (error) {
@@ -126,7 +126,7 @@ productRouter.delete("/:pid", async (req, res) => {
     try {
         const pid = parseInt(req.params.pid);
 
-        const rawData = fs.readFileSync("./productos.json");
+        const rawData = fs.readFileSync("../../productos.json");
         let productos = JSON.parse(rawData);
 
         const index = productos.findIndex(producto => producto.id === pid);
@@ -139,7 +139,7 @@ productRouter.delete("/:pid", async (req, res) => {
         productos.splice(index, 1);
 
         // Guarda el array actualizado de productos en el archivo JSON
-        fs.writeFileSync("./productos.json", JSON.stringify(productos, null, 2));
+        fs.writeFileSync("../../productos.json", JSON.stringify(productos, null, 2));
 
         res.json({ message: "Producto eliminado exitosamente" });
     } catch (error) {

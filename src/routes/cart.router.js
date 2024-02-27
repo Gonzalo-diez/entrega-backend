@@ -21,7 +21,7 @@ cartRouter.post("/", async (req, res) => {
         carritos.push(newCart);
         
         // Guarda el array actualizado de carritos en el archivo JSON
-        fs.writeFileSync("./carrito.json", JSON.stringify(carritos, null, 2));
+        fs.writeFileSync("../../carrito.json", JSON.stringify(carritos, null, 2));
 
         res.status(201).json({ message: "Carrito creado exitosamente", cart: newCart });
     } catch (error) {
@@ -32,7 +32,7 @@ cartRouter.post("/", async (req, res) => {
 
 cartRouter.get("/getCarts", async (req, res) => {
     try {
-        const rawData = fs.readFileSync("./carrito.json");
+        const rawData = fs.readFileSync("../../carrito.json");
         const carritos = JSON.parse(rawData);
 
         let result = carritos;
@@ -47,7 +47,7 @@ cartRouter.get("/:cid", async (req, res) => {
     try {
         const cid = parseInt(req.params.cid);
 
-        const rawData = fs.readFileSync("./carrito.json");
+        const rawData = fs.readFileSync("../../carrito.json");
         const carritos = JSON.parse(rawData);
 
         const cart = carritos.find(cart => cart.id === cid);
@@ -72,7 +72,7 @@ cartRouter.post("/:cid/product/:pid", async (req, res) => {
             return res.status(400).json({ error: "Cantidad invalida" });
         }
 
-        const rawData = fs.readFileSync("./carrito.json");
+        const rawData = fs.readFileSync("../../carrito.json");
         let carritos = JSON.parse(rawData);
 
         const cartIndex = carritos.findIndex(cart => cart.id === cid);
@@ -96,7 +96,7 @@ cartRouter.post("/:cid/product/:pid", async (req, res) => {
             carritos[cartIndex].products.push(productToAdd);
         }
 
-        fs.writeFileSync("./carrito.json", JSON.stringify(carritos, null, 2));
+        fs.writeFileSync("../../carrito.json", JSON.stringify(carritos, null, 2));
 
         res.json({ message: "Producto agregado al carrito exitosamente", cart: carritos[cartIndex] });
     } catch (error) {

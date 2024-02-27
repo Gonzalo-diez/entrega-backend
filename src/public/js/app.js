@@ -4,8 +4,9 @@ import handlebars from "express-handlebars";
 import { Server } from "socket.io"
 import bodyParser from "body-parser";
 import __dirname from "./util.js";
-import productRouter from "./routes/product.router.js";
-import cartRouter from "./routes/cart.router.js";
+import productRouter from "../../routes/product.router.js";
+import cartRouter from "../../routes/cart.router.js";
+import viewRouter from "../../routes/views.router.js";
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -17,13 +18,15 @@ app.use(express.json());
 app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 
-// Middleware para utilizar plantillas html
-app.engine("handlebars", handlebars.engine());
-app.set("views", __dirname + "/views");
-app.set("view engine", "handlebars");
-
 // Middleware adicional para analizar el cuerpo de la solicitud JSON en cartRouter
 cartRouter.use(bodyParser.json());
+
+// Middleware para utilizar plantillas html
+app.engine("handlebars", handlebars.engine());
+app.set("views", __dirname + "/src/views");
+app.set("view engine", "handlebars");
+app.use(express.static(__dirname + "/public"));
+app.use("/", viewRouter);
 
 const PORT = 8080;
 
@@ -36,5 +39,9 @@ httpServer.listen(PORT, () => {
 const socketServer = new Server(httpServer);
 
 socketServer.on('connection', socket => {
-    console.log("Nuevo cliente conectado!!")
+    console.log("Nuevo cliente conectado!!");
+
+    socket.on('message', data => {
+        console.log(data);
+    })
 })
