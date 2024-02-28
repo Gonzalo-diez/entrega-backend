@@ -21,6 +21,8 @@ app.use("/api/carts", cartRouter);
 // Middleware adicional para analizar el cuerpo de la solicitud JSON en cartRouter
 app.use(bodyParser.json());
 
+app.use(express.urlencoded({ extended: true }));
+
 // Middleware para utilizar plantillas html
 app.engine("handlebars", handlebars.engine());
 app.set("views", __dirname + "/views");

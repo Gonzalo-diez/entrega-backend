@@ -55,7 +55,7 @@ viewRouter.post("/realtimeproducts/addProduct", imgUpload.single("image"), (req,
             price,
             stock,
             category,
-            thumbnail: imageName
+            image: imageName
         };
         productos.push(newProduct);
 

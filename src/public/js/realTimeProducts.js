@@ -1,3 +1,5 @@
+import { io } from "../../app";
+
 const socket = io();
 
 // Manejar el envío del formulario para agregar un producto
@@ -10,9 +12,9 @@ document.getElementById('addProductForm').addEventListener('submit', (event) => 
     const price = parseFloat(document.getElementById('price').value);
     const stock = parseInt(document.getElementById('stock').value);
     const category = document.getElementById('category').value;
-    const thumbnail = document.getElementById('thumbnail').files[0];
+    const image = document.getElementById('image').files[0];
 
-    console.log('Datos del producto:', title, description, price, stock, category, thumbnail);
+    console.log('Datos del producto:', title, description, price, stock, category, image);
 
     // Crear un objeto FormData para enviar datos de formulario y archivos
     const formData = new FormData();
@@ -21,10 +23,13 @@ document.getElementById('addProductForm').addEventListener('submit', (event) => 
     formData.append('price', price);
     formData.append('stock', stock);
     formData.append('category', category);
-    formData.append('image', thumbnail);
+    formData.append('image', image);
 
     // Emitir el evento addProduct al servidor de WebSocket con los datos del producto
     socket.emit('addProduct', formData);
+
+    // Resetear el formulario después de enviar los datos
+    event.target.reset();
 });
 
 // Manejar la eliminación de un producto

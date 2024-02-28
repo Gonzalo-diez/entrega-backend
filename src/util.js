@@ -12,7 +12,7 @@ export function getProductsFilePath() {
 export function configureMulter() {
     const storage = multer.diskStorage({
         destination: function (req, file, cb) {
-            cb(null, path.join(__dirname, 'img'));
+            cb(null, path.join(__dirname, './public/img'));
         },
         filename: function (req, file, cb) {
             cb(null, file.originalname);
