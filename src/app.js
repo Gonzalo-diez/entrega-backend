@@ -4,9 +4,9 @@ import handlebars from "express-handlebars";
 import { Server } from "socket.io"
 import bodyParser from "body-parser";
 import __dirname from "./util.js";
-import productRouter from "../../routes/product.router.js";
-import cartRouter from "../../routes/cart.router.js";
-import viewRouter from "../../routes/views.router.js";
+import productRouter from "./routes/product.router.js";
+import cartRouter from "./routes/cart.router.js";
+import viewRouter from "./routes/views.router.js";
 
 const app = express();
 const httpServer = http.createServer(app);
@@ -19,11 +19,11 @@ app.use("/api/products", productRouter);
 app.use("/api/carts", cartRouter);
 
 // Middleware adicional para analizar el cuerpo de la solicitud JSON en cartRouter
-cartRouter.use(bodyParser.json());
+app.use(bodyParser.json());
 
 // Middleware para utilizar plantillas html
 app.engine("handlebars", handlebars.engine());
-app.set("views", __dirname + "/src/views");
+app.set("views", __dirname + "/views");
 app.set("view engine", "handlebars");
 app.use(express.static(__dirname + "/public"));
 app.use("/", viewRouter);
@@ -36,9 +36,9 @@ httpServer.listen(PORT, () => {
 });
 
 // Servidor WebSocket
-const socketServer = new Server(httpServer);
+export const io = new Server(httpServer);
 
-socketServer.on('connection', socket => {
+io.on('connection', socket => {
     console.log("Nuevo cliente conectado!!");
 
     socket.on('message', data => {

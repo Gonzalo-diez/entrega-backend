@@ -1,0 +1,30 @@
+<h1>Productos en tiempo real</h1>
+
+<form action="/realtimeproducts/addProduct" method="POST" id="addProductForm" enctype="multipart/form-data">
+    <input type="text" name="title" id="title" placeholder="Título" required>
+    <textarea name="description" id="description" placeholder="Descripción" required></textarea>
+    <input type="number" name="price" id="price" placeholder="Precio" required>
+    <input type="number" name="stock" id="stock" placeholder="Stock" required>
+    <input type="text" name="category" id="category" placeholder="Categoría" required>
+    <input type="file" name="image" id="thumbnail" accept="image/*" required>
+    <button type="submit">Agregar Producto</button>
+</form>
+
+
+<!-- Lista de productos -->
+<ul id="productList">
+    {{#each productos}}
+    <li data-product-id="{{id}}">
+        <img src="/img/{{thumbnail}}" alt="{{title}}">
+        <h2>{{title}}</h2>
+        <p>{{description}}</p>
+        <p>Precio: ${{price}}</p>
+        <p>Stock: {{stock}}</p>
+        <p>Categoría: {{category}}</p>
+        <button class="delete-btn" data-product-id="{{id}}" data-delete-url="http://localhost:8080/realtimeproducts/deleteProduct/{{id}}">Eliminar Producto</button>
+    </li>
+    {{/each}}
+</ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/realTimeProducts.js"></script>
