@@ -34,5 +34,14 @@
     "stock": "10",
     "category": "Libros",
     "image": "saga.jpg"
+  },
+  {
+    "id": 5,
+    "title": "PS4",
+    "description": "PS4",
+    "price": "750000",
+    "stock": "10",
+    "category": "Electrónica",
+    "image": "ps4.png"
   }
 ]

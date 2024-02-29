@@ -67,6 +67,9 @@ viewRouter.post("/realtimeproducts/addProduct", imgUpload.single("image"), (req,
         
         console.log("Producto agregado:", newProduct);
 
+        // Redirigir al usuario de nuevo a la página de realtimeproducts
+        res.redirect("/realtimeproducts");
+
         // Enviar una respuesta exitosa
         res.status(201).json({ message: "Producto agregado exitosamente", product: newProduct });
     } catch (error) {
