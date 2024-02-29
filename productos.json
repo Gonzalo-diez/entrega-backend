@@ -43,5 +43,14 @@
     "stock": "10",
     "category": "Electrónica",
     "image": "ps4.png"
+  },
+  {
+    "id": 6,
+    "title": "PS5",
+    "description": "PS5",
+    "price": "1500000",
+    "stock": "10",
+    "category": "Electrónica",
+    "image": "ps.png"
   }
 ]
